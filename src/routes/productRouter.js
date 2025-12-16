@@ -60,8 +60,18 @@ router.patch('/product/edit/:id',async(req,res)=>{
             throw new Error('Product Not Found!')
         }
 
+        if(quantity<1){
+            throw new Error('Please enter a valid quantity...')
+        }
+
+        if(price<=0){
+            throw new Error('Please enter a valid amount...')
+        }
+
+
         const updatedProduct = await Product.findByIdAndUpdate(id ,{name , price, desc, quantity, image, category })
         res.status(200).json({Success : true , updatedProduct}  )
+        
     } catch (error) {
         res.status(400).json({error: error.message})
     }

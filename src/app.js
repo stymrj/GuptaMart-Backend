@@ -4,6 +4,7 @@ const app = express()
 const mongoose = require('mongoose')
 
 const { productRouter } = require('./routes/productRouter')
+const { userRouter } = require('./routes/userRouter')
 
 
 mongoose.connect(process.env.MONGO_URI)
@@ -21,4 +22,4 @@ mongoose.connect(process.env.MONGO_URI)
 
 app.use(express.json())
 app.use('/api',productRouter)
-
+app.use('/api',userRouter)

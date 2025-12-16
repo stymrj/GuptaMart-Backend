@@ -6,7 +6,7 @@ const productSchema = new mongoose.Schema({
         type : String,
         required : true,
         minLength : 2,
-        maxLength : 20,
+        maxLength : 50,
         trim : true
     },
     price : {
@@ -16,7 +16,7 @@ const productSchema = new mongoose.Schema({
     desc : {
         type : String,
         minLength : 10,
-        maxLength : 50,
+        maxLength : 150,
         trim: true
     },
     quantity : {
