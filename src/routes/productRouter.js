@@ -51,6 +51,22 @@ router.delete('/product/:id', async (req,res)=>{
     }
 })
 
+router.patch('/product/edit/:id',async(req,res)=>{
+    try {
+        const {id} = req.params
+        const { name , price, desc, quantity, image, category  } = req.body
+        const foundProduct = await Product.findById(id)
+        if(!foundProduct){
+            throw new Error('Product Not Found!')
+        }
+
+        const updatedProduct = await Product.findByIdAndUpdate(id ,{name , price, desc, quantity, image, category })
+        res.status(200).json({Success : true , updatedProduct}  )
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+})
+
 
 
 module.exports = {
