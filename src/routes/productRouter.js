@@ -2,7 +2,14 @@ const express = require('express')
 const { Product } = require('../models/productSchema')
 const router = express.Router()
 
-router.post('/addProduct',async (req,res)=>{
+
+const { isLoggedIn } = require('../Middleware/isLoggedIn')
+const { isBuyer } = require('../Middleware/isBuyer')
+const { isSeller } = require('../Middleware/isSeller')
+
+
+
+router.post('/addProduct',isLoggedIn, isSeller ,async (req,res)=>{
     try {
         const { name , price, desc, quantity, image, category } = req.body
 
@@ -22,8 +29,7 @@ router.post('/addProduct',async (req,res)=>{
     }
 })
 
-
-router.get('/product/:id',async (req,res)=>{
+router.get('/product/:id',isLoggedIn, isBuyer, async (req,res)=>{
     try {
         const { id } = req.params
 
@@ -39,7 +45,7 @@ router.get('/product/:id',async (req,res)=>{
     }
 })
 
-router.delete('/product/:id', async (req,res)=>{
+router.delete('/product/:id',isLoggedIn, isSeller, async (req,res)=>{
     try {
         const { id } = req.params
         const filteredProducts = await Product.findByIdAndDelete(id)
@@ -51,7 +57,7 @@ router.delete('/product/:id', async (req,res)=>{
     }
 })
 
-router.patch('/product/edit/:id',async(req,res)=>{
+router.patch('/product/edit/:id',isLoggedIn, isSeller, async(req,res)=>{
     try {
         const {id} = req.params
         const { name , price, desc, quantity, image, category  } = req.body
