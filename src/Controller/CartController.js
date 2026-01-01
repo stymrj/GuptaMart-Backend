@@ -6,6 +6,10 @@ const addToCart = async (req, res) => {
         const { quantity } = req.body
         const { id } = req.params
 
+        if(quantity<=0){2
+            throw new Error('Quantity must be greater than 0')
+        }
+
         const foundProduct = await Product.findById(id)
         if(!foundProduct){
             throw new Error('Product not found!')
@@ -19,11 +23,12 @@ const addToCart = async (req, res) => {
         //updating cart if present
         for(let item of prevCart){
             if(item.product.toString() === id.toString()){
-                item.quantity = quantity
+                item.quantity = quantity``
                 isProductInCart = true
                 break
             }
         }
+
 
         //if not present in cart 
         if(!isProductInCart){
@@ -90,8 +95,15 @@ const cartSummary = async(req,res)=>{
     }
 }
 
+const clearCart = async(req,res)=>{
+    const user = await User.findById(req.user._id)
+    user.cart = []
+    await user.save()
+    res.status(200).json({msg:'cart cleared successfully!'})
+}
+
 
 
 module.exports = {
-    addToCart, viewCart, deleteFromCart, cartSummary
+    addToCart, viewCart, deleteFromCart, cartSummary, clearCart
 }
